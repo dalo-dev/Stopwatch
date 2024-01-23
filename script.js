@@ -1,4 +1,4 @@
-let milliseconds = 0;
+let count = 0;
 let seconds = 0;
 let minutes = 0;
 let hours = 0;
@@ -9,33 +9,35 @@ const startElement = document.getElementById("start-btn");
 const stopElement = document.getElementById("stop-btn");
 const resetElement = document.getElementById("reset-btn");
 
-timeElement.innerText = `${String(hours).padStart(2, "0")}:${String(
-  minutes
-).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(
-  milliseconds
-).padStart(2, "0")}`;
+const setCurrentTimer = function () {
+  timeElement.innerText = `${String(hours).padStart(2, "0")}:${String(
+    minutes
+  ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(
+    count
+  ).padStart(2, "0")}`;
+};
 
 const addSecond = function () {
-  seconds++;
-  if (seconds > 59) {
+  count++;
+  if (count === 100) {
+    count = 0;
+    seconds++;
+  }
+  if (seconds === 60) {
     seconds = 0;
     minutes++;
   }
-  if (minutes > 59) {
+  if (minutes === 60) {
     minutes = 0;
     hours++;
   }
 
-  timeElement.innerText = `${String(hours).padStart(2, "0")}:${String(
-    minutes
-  ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(
-    milliseconds
-  ).padStart(2, "0")}`;
+  setCurrentTimer();
 };
 
 const startCounter = function () {
   if (!intervalId) {
-    intervalId = setInterval(addSecond, 1000);
+    intervalId = setInterval(addSecond, 10);
   }
 };
 
@@ -46,18 +48,17 @@ const stopCounter = function () {
 
 const resetCounter = function () {
   stopCounter();
+  count = 0;
   milliseconds = 0;
   seconds = 0;
   minutes = 0;
   hours = 0;
 
-  timeElement.innerText = `${String(hours).padStart(2, "0")}:${String(
-    minutes
-  ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(
-    milliseconds
-  ).padStart(2, "0")}`;
+  setCurrentTimer();
 };
 
 startElement.addEventListener("click", startCounter);
 stopElement.addEventListener("click", stopCounter);
 resetElement.addEventListener("click", resetCounter);
+
+setCurrentTimer();
