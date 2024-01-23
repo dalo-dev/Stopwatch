@@ -7,6 +7,7 @@ let intervalId;
 const timeElement = document.getElementById("time");
 const startElement = document.getElementById("start-btn");
 const stopElement = document.getElementById("stop-btn");
+const resetElement = document.getElementById("reset-btn");
 
 timeElement.innerText = `${String(hours).padStart(2, "0")}:${String(
   minutes
@@ -43,5 +44,20 @@ const stopCounter = function () {
   intervalId = null;
 };
 
+const resetCounter = function () {
+  stopCounter();
+  milliseconds = 0;
+  seconds = 0;
+  minutes = 0;
+  hours = 0;
+
+  timeElement.innerText = `${String(hours).padStart(2, "0")}:${String(
+    minutes
+  ).padStart(2, "0")}:${String(seconds).padStart(2, "0")}:${String(
+    milliseconds
+  ).padStart(2, "0")}`;
+};
+
 startElement.addEventListener("click", startCounter);
 stopElement.addEventListener("click", stopCounter);
+resetElement.addEventListener("click", resetCounter);
